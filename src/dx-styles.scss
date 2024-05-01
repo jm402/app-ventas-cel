@@ -1,0 +1,171 @@
+html, body {
+  margin: 0px;
+  min-height: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.content {
+  line-height: 1.5;
+  flex-grow: 1;
+
+  h2 {
+    font-size: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+.title {
+  font-size: 23px;
+}
+
+.layout-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.content-block {
+  margin-left: 40px;
+  margin-right: 40px;
+  margin-top: 20px;
+
+  .screen-x-small & {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+.responsive-paddings {
+  padding: 20px;
+
+  .screen-large & {
+    padding: 40px;
+  }
+}
+
+/*Swal Alert*/
+
+
+// .swal2-popup.swal2-modal.swal2-icon-info.swal2-show {
+//   height: max-content;
+//   width: max-content;
+// }
+
+h2#swal2-title {
+  font-size: 30px;
+  font-weight: 500;
+}
+
+
+/*HEADERS DE GRID*/
+tr.dx-row.dx-header-row {
+  background-color: #dbd5d5;
+  color: #757575;
+}
+
+/*BOTONES DE EDICIÓN, ELIMINACIÓN*/
+// a.dx-link.dx-icon-edit.dx-link-icon {
+//   // color: #d9eb74;
+
+//   color: #d9eb74;
+//     background-color: chocolate;
+//     border-radius: 44px 46px 25px 25px !important;
+//     box-shadow: 0 0 0 1px cornsilk;
+// }
+// a.dx-link.dx-icon-trash.dx-link-icon {
+//   color: #e10505;
+// }
+
+// a.dx-link.dx-icon-eyeopen.dx-link-icon {
+//   color: #8c2bd5;
+// }
+
+
+.ModalCorp{
+  .modal-header {
+    background-color: #da5252 !important;
+
+    .modal-title {
+      color: #f7f7f7;
+    }
+    // font-size: 1.2em;
+  }
+  .modal-content {
+    background: #f7f7f7;
+    box-shadow: 0px 4px 4px rgba(68, 68, 68, 0.25);
+    font-size: 1em;
+    padding: 0%;
+    overflow-y: auto;
+  }
+
+  .modal-dialog {
+
+    // width: fit-content;
+    width: 100%;
+    min-width: fit-content;
+    height: fit-content;
+    max-height: fit-content;
+    font-size: 1em;
+    padding: 0%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow-y: auto;
+    min-height: calc(100vh - 60px);
+
+
+  }
+
+  @media (max-height: fit-content) {
+    .modal-dialog {
+      min-height: calc(100vh - 20px);
+    }
+  }
+}
+
+/*BOTONES*/
+.btnEditar{
+  color: rgb(243, 167, 85);
+  transition: all 300ms ease 0ms;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+}
+.btnEditar:hover{
+  color: rgb(204, 120, 31);
+  box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+.btnEliminar{
+  // background-color: #EC2745;
+  color: #f24b4b;
+  transition: all 300ms ease 0ms;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  z-index: 99;
+}
+.btnEliminar:hover{
+  // background-color: #ec2744bc;
+  color: #e02323;
+  box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+.btnVerComo {
+ // background-color: #EC2745;
+ color: #776ead;
+ transition: all 300ms ease 0ms;
+ box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+ z-index: 99;
+}
+.btnVerComo:hover {
+  color: #3b29a2;
+  transform: translateY(-7px);
+  transform: scale(1.1);
+}
+
+#gridContainer > div > div.dx-datagrid-headers.dx-datagrid-nowrap {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+}

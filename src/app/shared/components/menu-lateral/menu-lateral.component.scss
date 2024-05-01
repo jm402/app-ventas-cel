@@ -1,0 +1,51 @@
+.container-menu {
+    background-color: #D5D9DD;
+    height: 100vh;
+    padding: 0px;
+    z-index: 200;
+}
+
+/*tipografia */
+.hover-menu span {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 15px;
+}
+
+/*efecto hover*/
+
+.active {
+    background-color: #FF2946;
+    color: #FFFFFF !important;
+}
+.hover-menu:hover {
+    background-color: #FF2946;
+    color: #FFFFFF !important;
+    cursor: pointer;
+}
+.container-menu {
+    .categoria {
+      cursor: pointer;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .categoria2 {
+      cursor: pointer;
+      padding: 10px 0px;
+      padding-left: 20px;
+    }
+  
+    .elementos {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+    }
+  
+    .elementos.expandida {
+      max-height: 1000px; /* Ajusta la altura máxima según tus necesidades */
+    }
+  
+    .elementos .hover-menu {
+      padding: 10px;
+    }
+  }

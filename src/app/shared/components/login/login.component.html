@@ -1,0 +1,10 @@
+<div>
+    <div class="position-absolute top-50 start-50 translate-middle text-center">
+        <div *ngIf="!isLoggedIn()">
+            <span>Iniciar Sesión</span><br>
+            <button class="btn btn-danger" (click)="validateSesion()">Iniciar sesión</button><br>
+        </div>
+        <app-home></app-home>
+    </div>
+    <img src="assets/images/bg-login.png" class="img-fluid" style="width: 100%;"> 
+</div>

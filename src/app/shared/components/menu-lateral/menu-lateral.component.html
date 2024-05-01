@@ -1,0 +1,76 @@
+<div class="container-menu">
+    <div *ngFor="let categoria of categorias.menus">
+        <ng-container>
+            <div class="categoria" (click)="toggleCategoria(categoria)">
+                <span><b>{{ categoria.vchDescripcion }}</b></span>
+            </div>
+            <div class="elementos" [ngClass]="{'expandida': categoria.expandida}" *ngIf="categoria.menus">
+                <div *ngFor="let elemento of categoria.menus">
+                    
+                    @if (elemento.menus.length === 0) {
+                        <div
+                            class="pt-2 pb-2 ps-4 hover-menu"
+                            routerLinkActive="active"
+                            [routerLink]="elemento.vchUrl"
+                        >
+                            <span class="ms-3">{{ elemento.vchDescripcion }}</span>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="elementos" [ngClass]="{'expandida': categoria.expandida}" *ngIf="categoria.menus">
+                <div *ngFor="let categoria of categoria.menus">
+                
+                    @if (categoria.menus.length > 0) {
+                        <ng-container>
+                            <div class="categoria2" (click)="toggleCategoria(categoria)">
+                                <span><b>{{ categoria.vchDescripcion }}</b></span>
+                            </div>
+                            <div class="elementos" [ngClass]="{'expandida': categoria.expandida}">
+                                <div *ngFor="let elemento of categoria.menus">
+                                    <div
+                                        class="pt-2 pb-2 ps-4 hover-menu"
+                                        routerLinkActive="active"
+                                        [routerLink]="elemento.vchUrl"
+                                    >
+                                        <span class="ms-3">{{ elemento.vchDescripcion }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    }
+
+                </div>
+            </div>
+
+
+<!-- 
+            <div *ngFor="let categoria of categoria.elemento">
+                <ng-container>
+                    <div class="categoria" (click)="toggleCategoria(categoria)">
+                        <span><b>{{ categoria.nombre }}</b></span>
+                    </div>
+                    <div class="elementos" [ngClass]="{'expandida': categoria.expandida}">
+                        <div *ngFor="let elemento of categoria.elementos">
+                            <div
+                                class="pt-2 pb-2 ps-4 hover-menu"
+                                routerLinkActive="active"
+                                [routerLink]="elemento.link"
+                            >
+                                <span class="ms-3">{{ elemento.nombre }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div> -->
+
+        </ng-container>
+    </div>
+</div>
+    
+<!--
+  <ng-container  *appPermisos="categoria.permisos!">
+    ...
+    *appPermisos="[elemento.permiso]"
+-->

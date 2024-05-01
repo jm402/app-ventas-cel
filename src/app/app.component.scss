@@ -1,0 +1,18 @@
+.app-container {
+    height: 100vh;
+    margin: 0px; 
+    overflow: hidden;
+    padding: 0px;
+}
+.fixed-element {
+    padding: 0 !important;
+    position: fixed !important;
+    /* Other styling as needed */
+}
+.body-content {
+    margin: 90px 0px;
+}
+.grid-menu {
+    padding-right: 0 !important;
+    padding: 0px;
+}
