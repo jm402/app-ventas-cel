@@ -1,5 +1,4 @@
 import { Injectable, inject } from '@angular/core';
-import { AuthenticationResult, EventType } from '@azure/msal-browser';
 import { AlertService } from './alert.service';
 
 @Injectable({
