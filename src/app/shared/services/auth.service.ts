@@ -1,6 +1,21 @@
 import { Injectable, inject } from '@angular/core';
 import { AlertService } from './alert.service';
 
+import { 
+  Auth, 
+  UserCredential, 
+  authState, 
+  createUserWithEmailAndPassword, 
+  GoogleAuthProvider, 
+  signInWithPopup
+} from '@angular/fire/auth';
+import { map } from 'rxjs';
+
+export interface Credentials {
+  email: string;
+  password: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -8,47 +23,55 @@ export class AuthService {
 
   //private usuariosService = inject(UsuariosService);
   private alertService = inject(AlertService); // AlertService
+  private auth: Auth = inject(Auth);
 
-  constructor() {
-    this.init();
+  readonly authState$ = authState(this.auth);
+
+  singUpWithEmailAndPassword(credentials: Credentials): Promise<UserCredential> {
+    return createUserWithEmailAndPassword(this.auth, credentials.email, credentials.password);
   }
 
-  ngOnInit() {
+  singUpWithGoogle(): Promise<UserCredential> {
+    const provider = new GoogleAuthProvider();
+    return this.callPopUp(provider);
   }
 
-  init() {
+  async callPopUp(provider: GoogleAuthProvider): Promise<UserCredential> {
+    try {
+      const result = await signInWithPopup(this.auth, provider);
+      return result;
+    } catch (error: any) {
+      return error;
+    }
   }
 
   getUserEmail() {
-    let userEmail: string = '';
-    return userEmail;
-  }
-
-  getActiveAccount() {
-    return null;
-  }
-
-  getAllAccounts() {
-    return null;
+    const currentUser = this.auth.currentUser;
+    return currentUser!.email || "";
   }
 
   getName(): any {
-    return null;
+    const currentUser = this.auth.currentUser;
+    return currentUser!.displayName || "";
+  }
+
+  getPhotoProfile(): any {
+    const currentUser = this.auth.currentUser;
+    return currentUser!.photoURL || "";
   }
 
   isLoggedIn(): boolean {
-    return false;
+    const currentUser = this.auth.currentUser;
+    if (currentUser) {
+      //console.debug('Usuario autenticado:', currentUser);
+      return true;
+    } else {
+      //console.debug('Usuario no autenticado');
+      return false;
+    }
   }
 
-  login() {
-  }
-
-  validateSesion() {
-  }
-
-  logout() {
-  }
-
-  getPerfilUsuario(email: string) {
+  logout(): Promise<void> {
+    return this.auth.signOut();
   }
 }

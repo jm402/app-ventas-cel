@@ -27,6 +27,6 @@ export class AppComponent  {
   }
 
   isLoggedIn(): boolean {
-    return this.authService.getActiveAccount() != null;
+    return this.authService.isLoggedIn();
   }
 }

@@ -4,9 +4,9 @@
     <app-header class="fixed-element"></app-header>
   </div>
   <div class="row body-content">
-    <div class="col-2 grid-menu">
+    <!-- <div class="col-2 grid-menu">
       <app-menu-lateral *ngIf="isLoggedIn()"></app-menu-lateral>
-    </div>
+    </div> -->
     <div [ngClass]="{'col-10': isLoggedIn(), 'col-12': !isLoggedIn()}">
       <router-outlet></router-outlet>
     </div>

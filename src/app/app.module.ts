@@ -14,6 +14,9 @@ import { HomeComponent } from './shared/components/home/home.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { PagesModule } from './pages/pages.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
+import { provideAuth, getAuth } from "@angular/fire/auth";
+import { environment } from '../environments/environments';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
     HttpClientModule,
     SpinnerModule,
     PagesModule,

@@ -17,8 +17,8 @@ export class MenuLateralComponent {
   constructor() {}
 
   ngOnInit(): void {
-    this.getUser();
-    this.getData();
+    //this.getUser();
+    //this.getData();
   }
 
   getData() {

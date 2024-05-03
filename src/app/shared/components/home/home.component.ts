@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return this.authService.getActiveAccount() != null;
+    return this.authService.isLoggedIn() != null;
   }
 
   getName(): string {

@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,51 +10,43 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   userPhotoUrl: SafeUrl; 
-  AccessToken: string;
 
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   constructor() {
     this.userPhotoUrl = 'assets/images/foto-perfil-logout.png';
-    this.AccessToken = '';
   }
   
   ngOnInit(): void {
+    //this.getdata();
+  }
+
+  ngDoCheck() {
+    console.debug(`ngDoCheck ${this.userPhotoUrl}`);
     this.getdata();
   }
   
   isLoggedIn(): boolean {
-    return this.authService.getActiveAccount() != null;
+    return this.authService.isLoggedIn() != false;
   }
 
   getdata(): any {
-    // this.msalService
-    //   .acquireTokenSilent({ scopes: ['User.Read', 'User.ReadBasic.All'] })
-    //   .subscribe((tokenResponse) => {
-    //     const apiUrl = 'https://graph.microsoft.com/v1.0/me/photo/$value';
-    //     const accessToken = tokenResponse.accessToken;
-    //     console.log('===> accessToken ' + tokenResponse.accessToken)
-    //     const headers = new HttpHeaders({
-    //       Authorization: `Bearer ${accessToken}`,
-    //     });
-    //     this.http.get(apiUrl, { headers, responseType: 'blob' }).subscribe(
-    //       (data) => {
-    //         // Convierte la respuesta a una URL segura
-    //         const blob = new Blob([data], { type: 'image/jpeg' }); // Cambia el tipo MIME según corresponda
-    //         const imageUrl = URL.createObjectURL(blob);
-    //         this.userPhotoUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-    //       },
-    //       (error) => {
-    //         console.error('Error al obtener datos:', error);
-    //       }
-    //     )
-    //   },
-    //   (err) => {
-    //     console.error('===> msalService ERROR ' + err.message);
-    //   });
+    if (this.isLoggedIn()) {
+      this.userPhotoUrl = this.authService.getPhotoProfile();
+      console.debug(`userPhotoUrl ${this.userPhotoUrl}`);
+    }
   }
 
   logout() {
     this.authService.logout();
+    this.userPhotoUrl = 'assets/images/foto-perfil-logout.png';
+    this.refreshData();
+  }
+
+  refreshData() {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl('/current-route'); // Replace with your actual route
+    });
   }
 }

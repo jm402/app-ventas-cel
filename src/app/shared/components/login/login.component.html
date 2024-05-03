@@ -1,8 +1,7 @@
 <div>
     <div class="position-absolute top-50 start-50 translate-middle text-center">
         <div *ngIf="!isLoggedIn()">
-            <button class="btn btn-secondary" (click)="validateSesion()"><i class="fa-brands fa-google"></i> Iniciar sesión</button><br>
+            <button class="btn btn-secondary btn-uno" (click)="login()"><i class="fa-brands fa-google"></i> Iniciar con Google</button><br>
         </div>
-        <app-home></app-home>
     </div>
 </div>

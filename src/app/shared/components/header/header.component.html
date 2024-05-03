@@ -17,9 +17,7 @@
         </ul>
         <form class="d-flex" role="search">
           <p class="text-close-sesion" (click)="logout()" *ngIf="isLoggedIn()">Cerrar Sesión</p>
-          <img [src]="userPhotoUrl" alt="foto perfil" class="img-perfil" *ngIf="isLoggedIn()">
-
-          <img src="assets/images/foto-perfil-logout.png" alt="foto perfil" class="img-perfil" *ngIf="!isLoggedIn()">
+          <img [src]="userPhotoUrl" alt="foto perfil" class="img-perfil">
         </form>
       </div>
     </div>
