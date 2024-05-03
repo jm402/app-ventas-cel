@@ -40,7 +40,7 @@ import { environment } from '../environments/environments';
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       // registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true }

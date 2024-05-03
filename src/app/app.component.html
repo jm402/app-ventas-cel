@@ -7,7 +7,8 @@
     <!-- <div class="col-2 grid-menu">
       <app-menu-lateral *ngIf="isLoggedIn()"></app-menu-lateral>
     </div> -->
-    <div [ngClass]="{'col-10': isLoggedIn(), 'col-12': !isLoggedIn()}">
+    <!-- <div [ngClass]="{'col-10': isLoggedIn(), 'col-12': !isLoggedIn()}"> -->
+    <div class="col-12">
       <router-outlet></router-outlet>
     </div>
   </div>

@@ -29,7 +29,7 @@ export const publicGuard: CanActivateChildFn = () => {
         map((user) => {
             if (user) {
                 console.debug('publicGuard Usuario autenticado:', user.email);
-                router.navigateByUrl("/home");
+                router.navigateByUrl("/");
                 return false;
             }
             return true;

@@ -5,6 +5,7 @@ export const environment = {
         projectId: "venta-cels-app",
         storageBucket: "venta-cels-app.appspot.com",
         messagingSenderId: "7751641809",
-        appId: "1:7751641809:web:c7b3bb9918feefe317b3f0"
+        appId: "1:7751641809:web:c7b3bb9918feefe317b3f0",
+        databaseURL: "https://venta-cels-app.firebaseio.com",
     }
 }
