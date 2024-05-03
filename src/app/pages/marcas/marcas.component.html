@@ -13,19 +13,22 @@
                     <dx-data-grid
                         id="gridContainer"
                         [dataSource]="dataSource"
-                        keyExpr="key"
+                        keyExpr="guid"
                         [showBorders]="true"
                         [repaintChangesOnly]="false"
                         [columnAutoWidth]="true"
-                        [allowColumnResizing]="true">
+                        [allowColumnResizing]="true"
+                        (onRowInserting)="agregarElemento($event)"
+                        (onRowUpdating)="actualizarElemento($event)"
+                        (onRowRemoving)="eliminarElemento($event)">
                         <dxo-grouping
                           [contextMenuEnabled]="true"
                           expandMode="rowClick">
                         </dxo-grouping>
-                        <dxo-group-panel
+                        <!-- <dxo-group-panel
                         [visible]="true"
                         emptyPanelText="Arrastre una columna aqui para agrupar por dicha columna"
-                        ></dxo-group-panel>
+                        ></dxo-group-panel> -->
                         <dxo-filter-row
                             [visible]="true"
                             applyFilter="auto">
@@ -46,21 +49,21 @@
                           [visible]="true"
                           placeholder="Buscar">
                         </dxo-search-panel>
-                        <dxo-column-chooser
+                        <!-- <dxo-column-chooser
                           [enabled]="true"
                           [mode]="'select'"
                           [title]="'Columnas'">
-                        </dxo-column-chooser>
-                        <dxo-header-filter [visible]="true" [allowSearch]="true"></dxo-header-filter>
+                        </dxo-column-chooser> -->
+                        <dxo-header-filter [visible]="true" [search]="true"></dxo-header-filter>
                         <!-- create filter -->
-                        <dxo-filter-panel
+                        <!-- <dxo-filter-panel
                           [visible]="true"
                           [texts]="{ createFilter: 'Crear Filtro', clearFilter: 'Limpiar' }">
-                        </dxo-filter-panel>
-                        <dxo-filter-builder-popup
+                        </dxo-filter-panel> -->
+                        <!-- <dxo-filter-builder-popup
                               [width]="400"
                               title="Configuración de Filtros">
-                        </dxo-filter-builder-popup>
+                        </dxo-filter-builder-popup> -->
                         <!-- search input column -->
                         <dxo-filter-row [visible]="true"></dxo-filter-row>
                         <dxo-editing
@@ -70,6 +73,8 @@
                             mode="popup"> <!-- 'batch' | 'cell' | 'form' | 'popup' -->
                         </dxo-editing>
 
+                        <!-- <dxi-column dataField="guid" caption="Id"></dxi-column> -->
+                        <dxi-column dataField="nombre" caption="Nombre"></dxi-column>
 
                     </dx-data-grid>
                 </div>
