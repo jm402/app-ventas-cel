@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs, doc, deleteDoc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, setDoc, updateDoc } from "firebase/firestore";
 import { environment } from '../../../environments/environments';
 
 const app = initializeApp(environment.firebaseConfig);
@@ -12,6 +12,7 @@ const db = getFirestore(app);
 export interface Marcas {
   guid: string;
   nombre: string;
+  isActive: boolean;
 }
 @Component({
   selector: 'app-marcas',
@@ -47,10 +48,13 @@ export class MarcasComponent {
       // console.log(doc.id, " => ", doc.data());
       let data: Marcas = {
         guid: doc.id,
-        nombre: doc.data().nombre
+        nombre: doc.data().nombre,
+        isActive: doc.data().isActive
       };
-      this.dataSource.push(data);
-      this.dataSource = this.ordenarArray(this.dataSource);
+      if (data.isActive) {
+        this.dataSource.push(data);
+        this.dataSource = this.ordenarArray(this.dataSource);
+      }
     });
   }
 
@@ -70,19 +74,27 @@ export class MarcasComponent {
 
   async agregarElemento($event: any) {
     await setDoc(doc(db, "marcas", this.generateGUID()), {
-      nombre: $event.data.nombre
+      nombre: $event.data.nombre,
+      isActive: true
     });
-    console.debug("Document written with ID: ", this.generateGUID());
+    //console.debug("Document written with ID: ", this.generateGUID());
     this.getData();
   }
+
   async actualizarElemento($event: any) {
-    await setDoc(doc(db, "marcas", $event.oldData.guid), {
+    const marcaRef = doc(db, "marcas",  $event.oldData.guid);
+    await updateDoc(marcaRef, {
       nombre: ($event.newData.nombre != undefined)? $event.newData.nombre: $event.oldData.nombre
     });
-    console.debug("Document written with ID: ", this.generateGUID());
+    //console.debug("Document written with ID: ", this.generateGUID());
     this.getData();
   }
+
   async eliminarElemento($event: any) {
-    await deleteDoc(doc(db, "marcas", $event.data.guid));
+    const marcaRef = doc(db, "marcas",  $event.data.guid);
+    await updateDoc(marcaRef, {
+      isActive: false
+    });
+    this.getData();
   }
 }
