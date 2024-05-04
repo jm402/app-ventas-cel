@@ -1,19 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import { collection, getDocs, doc, deleteDoc, setDoc, updateDoc } from "firebase/firestore";
-import { environment } from '../../../environments/environments';
+import { Marcas } from '../../models/marcas.model';
+import { MarcasService } from '../../services/marcas.service';
 
-const app = initializeApp(environment.firebaseConfig);
-const db = getFirestore(app);
-
-export interface Marcas {
-  guid: string;
-  nombre: string;
-  isActive: boolean;
-}
 @Component({
   selector: 'app-marcas',
   templateUrl: './marcas.component.html',
@@ -36,36 +26,16 @@ export class MarcasComponent {
   info:                                 any = 'Sin información'
   submitted:                            boolean= false;
 
+  private _service = inject(MarcasService);
+
   constructor() {
     this.getData();
   }
 
   async getData() {
-    this.dataSource = [];
-    const querySnapshot = await getDocs(collection(db, "marcas"));
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
-      let data: Marcas = {
-        guid: doc.id,
-        nombre: doc.data().nombre,
-        isActive: doc.data().isActive
-      };
-      if (data.isActive) {
-        this.dataSource.push(data);
-        this.dataSource = this.ordenarArray(this.dataSource);
-      }
-    });
+    this.dataSource = await this._service.get();
   }
 
-  ordenarArray(array: any[]) {
-    const rta = array.sort(function(a, b){
-      if(a.nombre < b.nombre) { return -1; }
-      if(a.nombre > b.nombre) { return 1; }
-      return 0;
-    });
-    return rta;
-  }
   generateGUID(): string {
     const timestamp = new Date().getTime();
     const randomNum = Math.floor(Math.random() * 1000000);
@@ -73,28 +43,19 @@ export class MarcasComponent {
   }
 
   async agregarElemento($event: any) {
-    await setDoc(doc(db, "marcas", this.generateGUID()), {
-      nombre: $event.data.nombre,
-      isActive: true
-    });
+    await this._service.agregarElemento($event);
     //console.debug("Document written with ID: ", this.generateGUID());
     this.getData();
   }
 
   async actualizarElemento($event: any) {
-    const marcaRef = doc(db, "marcas",  $event.oldData.guid);
-    await updateDoc(marcaRef, {
-      nombre: ($event.newData.nombre != undefined)? $event.newData.nombre: $event.oldData.nombre
-    });
+    await this._service.actualizarElemento($event);
     //console.debug("Document written with ID: ", this.generateGUID());
     this.getData();
   }
 
   async eliminarElemento($event: any) {
-    const marcaRef = doc(db, "marcas",  $event.data.guid);
-    await updateDoc(marcaRef, {
-      isActive: false
-    });
+    await this._service.eliminarElemento($event);
     this.getData();
   }
 }
