@@ -1,1 +1,88 @@
-<p>modelos works!</p>
+<div class="row page-content">
+    <div class="col-12 mt-3 ps-5 pe-5">
+        <div class="d-flex justify-content-center">
+          <div class="title"><strong>Modelos</strong></div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-12">
+              <!-- <button class="btn btn-light" (click)="openModal($event)" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar" data-bs-toggle="modal"  >
+                <i class="fas fa-plus"></i>
+              </button> -->
+
+                <div id="data-grid-demo">
+                    <dx-data-grid
+                        id="gridContainer"
+                        [dataSource]="dataSource"
+                        keyExpr="guid"
+                        [showBorders]="true"
+                        [repaintChangesOnly]="false"
+                        [columnAutoWidth]="true"
+                        [allowColumnResizing]="true"
+                        (onRowInserting)="agregarElemento($event)"
+                        (onRowUpdating)="actualizarElemento($event)"
+                        (onRowRemoving)="eliminarElemento($event)">
+                        <dxo-grouping
+                          [contextMenuEnabled]="true"
+                          expandMode="rowClick">
+                        </dxo-grouping>
+                        <!-- <dxo-group-panel
+                        [visible]="true"
+                        emptyPanelText="Arrastre una columna aqui para agrupar por dicha columna"
+                        ></dxo-group-panel> -->
+                        <dxo-filter-row
+                            [visible]="true"
+                            applyFilter="auto">
+                        </dxo-filter-row>
+                        <dxo-paging
+                          [pageSize]="10">
+                        </dxo-paging>
+                        <dxo-pager
+                            [visible]="true"
+                            [allowedPageSizes]="allowedPageSizes"
+                            [displayMode]="displayMode"
+                            [showPageSizeSelector]="showPageSizeSelector"
+                            [showInfo]="showInfo"
+                            [showNavigationButtons]="showNavButtons"
+                            infoText="Página {0} de {1} ({2} elementos)">
+                        </dxo-pager>
+                        <dxo-search-panel
+                          [visible]="true"
+                          placeholder="Buscar">
+                        </dxo-search-panel>
+                        <!-- <dxo-column-chooser
+                          [enabled]="true"
+                          [mode]="'select'"
+                          [title]="'Columnas'">
+                        </dxo-column-chooser> -->
+                        <dxo-header-filter [visible]="true" [search]="true"></dxo-header-filter>
+                        <!-- create filter -->
+                        <!-- <dxo-filter-panel
+                          [visible]="true"
+                          [texts]="{ createFilter: 'Crear Filtro', clearFilter: 'Limpiar' }">
+                        </dxo-filter-panel> -->
+                        <!-- <dxo-filter-builder-popup
+                              [width]="400"
+                              title="Configuración de Filtros">
+                        </dxo-filter-builder-popup> -->
+                        <!-- search input column -->
+                        <dxo-filter-row [visible]="true"></dxo-filter-row>
+                        <dxo-editing
+                            [allowUpdating]="true"
+                            [allowAdding]="true"
+                            [allowDeleting]="true"
+                            mode="popup"> <!-- 'batch' | 'cell' | 'form' | 'popup' -->
+                        </dxo-editing>
+
+                        <!-- <dxi-column dataField="guid" caption="Id"></dxi-column> -->
+                        <dxi-column dataField="nombre" caption="Modelo"></dxi-column>
+                        <dxi-column dataField="marcaId" caption="Marca">
+                            <dxo-lookup [dataSource]="marcasList" displayExpr="nombre" valueExpr="guid">
+                            </dxo-lookup>
+                        </dxi-column>
+                    </dx-data-grid>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

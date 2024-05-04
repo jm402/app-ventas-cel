@@ -1,6 +1,5 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { collection, getDocs, doc, deleteDoc, setDoc, updateDoc } from "firebase/firestore";
 import { Marcas } from '../../models/marcas.model';
 import { MarcasService } from '../../services/marcas.service';
 
@@ -34,12 +33,6 @@ export class MarcasComponent {
 
   async getData() {
     this.dataSource = await this._service.get();
-  }
-
-  generateGUID(): string {
-    const timestamp = new Date().getTime();
-    const randomNum = Math.floor(Math.random() * 1000000);
-    return `${timestamp}-${randomNum}`;
   }
 
   async agregarElemento($event: any) {
