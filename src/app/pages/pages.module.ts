@@ -6,12 +6,14 @@ import { MarcasComponent } from './marcas/marcas.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DxButtonModule, DxDataGridModule, DxPopupModule, DxCheckBoxModule, DxListModule, DxSelectBoxModule, DxTemplateModule, DxValidatorModule, DxFormModule, DxTreeListModule } from 'devextreme-angular';
 import { ModelosComponent } from './modelos/modelos.component';
+import { VentasComponent } from './ventas/ventas.component';
 
 
 @NgModule({
   declarations: [
     MarcasComponent,
-    ModelosComponent
+    ModelosComponent,
+    VentasComponent
   ],
   imports: [
     CommonModule,

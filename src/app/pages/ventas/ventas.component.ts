@@ -1,16 +1,20 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MarcaModelo, Ventas } from '../../models/ventas.model';
 import { Marcas } from '../../models/marcas.model';
+import { Modelos } from '../../models/modelos.model';
 import { MarcasService } from '../../services/marcas.service';
+import { ModelosService } from '../../services/modelos.service';
+import { VentasService } from '../../services/ventas.service';
 import { AlertService } from '../../shared/services/alert.service';
 
 @Component({
-  selector: 'app-marcas',
-  templateUrl: './marcas.component.html',
-  styleUrl: './marcas.component.scss'
+  selector: 'app-ventas',
+  templateUrl: './ventas.component.html',
+  styleUrl: './ventas.component.scss'
 })
-export class MarcasComponent {
-  public dataSource:                    Marcas[];
+export class VentasComponent {
+  public dataSource:                    Ventas[];
   public formModal:                     FormGroup;
   @ViewChild('ModalConcepto') Modal:    ElementRef<any>;
   public Title:                         any='';
@@ -23,8 +27,13 @@ export class MarcasComponent {
   isUpdating:                           boolean = false;
   info:                                 any = 'Sin información'
   submitted:                            boolean= false;
+  modelosList:                          Modelos[] = []; 
+  marcasList:                           Marcas[] = [];
+  marcaModeloList:                      MarcaModelo[] = [];
 
-  private _service = inject(MarcasService);
+  private _service = inject(VentasService);
+  private _MarcasService = inject(MarcasService);
+  private _ModelosService = inject(ModelosService);
   private _alertService = inject(AlertService);
 
   constructor() {
@@ -32,8 +41,36 @@ export class MarcasComponent {
   }
 
   async getData() {
-    this.dataSource = [];
     this.dataSource = await this._service.get();
+    this.getModelos();
+  }
+  
+  async getModelos() {
+    this.modelosList = await this._ModelosService.get();
+    this.getMarcas();
+  }
+
+  async getMarcas() {
+    this.marcasList = await this._MarcasService.get();
+    this.getMarcaModelos();
+  }
+
+  async getMarcaModelos() {
+    this.marcaModeloList = [];
+    this.modelosList.forEach((model) => {
+      this.marcasList.forEach((marca) => {
+        if (model.marcaId === marca.guid) {
+          this.marcaModeloList.push({
+            displayName: `${marca.nombre} - ${model.nombre}`,
+            modeloId: model.guid,
+            marcaId: marca.guid
+          });
+        }
+      });
+    });
+    // console.log(JSON.stringify(this.modelosList));    
+    // console.log(JSON.stringify(this.marcasList));    
+    // console.log(JSON.stringify(this.marcaModeloList));    
   }
 
   async agregarElemento($event: any) {
@@ -41,7 +78,7 @@ export class MarcasComponent {
     let isExist = this.isExist(this.dataSource,$event.data);
     if (isComplete === true && isExist === false) {
       await this._service.agregarElemento($event);
-      //console.debug("Document written with ID: ", this.generateGUID())
+      //console.debug("Document written with ID: ", this.generateGUID());
       this.getData();
     }
     else {
@@ -73,15 +110,13 @@ export class MarcasComponent {
     this.getData();
   }
 
-  isExist(dataSource: Marcas[], data: Marcas) {
+  isExist(dataSource: Ventas[], data: Ventas) {
     let isExist = false;
     try {
       //console.log(`${JSON.stringify(dataSource)}`);
       if (dataSource.length > 0) {  
         dataSource.forEach((item) => {
-          //console.log('forEach:',item.nombre);
-          if (item.nombre.toLowerCase() === data.nombre.toLowerCase()) {
-            //console.log('nombre:',item.nombre);
+          if (item.imei.toLowerCase() === data.imei.toLowerCase() || item.numero.toLowerCase() === data.numero.toLowerCase()) {
             isExist = true;
           }
         });
@@ -91,10 +126,16 @@ export class MarcasComponent {
     }
     return isExist;
   }
-
-  isComplete(data: Marcas) {
+  
+  isComplete(data: Ventas) {
     try {
-      if (data.nombre === undefined || data.nombre === '') {
+      if (data.imei === undefined || data.imei === '') {
+        return false;
+      }
+      if (data.numero === undefined || data.numero === '') {
+        return false;
+      }
+      if (data.modeloId === undefined || data.modeloId === '') {
         return false;
       }
     } catch (error) {

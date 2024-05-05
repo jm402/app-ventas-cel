@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { AlertService } from './alert.service';
-
 import { 
   Auth, 
   UserCredential, 
@@ -9,12 +8,7 @@ import {
   GoogleAuthProvider, 
   signInWithPopup
 } from '@angular/fire/auth';
-import { map } from 'rxjs';
-
-export interface Credentials {
-  email: string;
-  password: string;
-}
+import { Credentials } from '../../models/credential.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +37,11 @@ export class AuthService {
     } catch (error: any) {
       return error;
     }
+  }
+
+  getUid(): any {
+    const currentUser = this.auth.currentUser;
+    return currentUser!.uid || "";
   }
 
   getUserEmail() {

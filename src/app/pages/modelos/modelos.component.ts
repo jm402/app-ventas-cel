@@ -4,6 +4,7 @@ import { Modelos } from '../../models/modelos.model';
 import { ModelosService } from '../../services/modelos.service';
 import { MarcasService } from '../../services/marcas.service';
 import { Marcas } from '../../models/marcas.model';
+import { AlertService } from '../../shared/services/alert.service';
 
 @Component({
   selector: 'app-modelos',
@@ -12,12 +13,10 @@ import { Marcas } from '../../models/marcas.model';
 })
 export class ModelosComponent {
   public dataSource:                    Modelos[];
-  public conceptosList:                 any[] = [];
   public formModal:                     FormGroup;
   @ViewChild('ModalConcepto') Modal:    ElementRef<any>;
   public Title:                         any='';
   public btn:                           any='';
-  public concepto:                      any = {};
   readonly allowedPageSizes:            number[] = [10, 20, 50];
   displayMode:                          any = 'full';
   showPageSizeSelector:                 boolean = true;
@@ -30,14 +29,15 @@ export class ModelosComponent {
 
   private _service = inject(ModelosService);
   private _MarcasService = inject(MarcasService);
+  private _alertService = inject(AlertService);
 
   constructor() {
     this.getData();
-    this.getMarcas();
   }
 
   async getData() {
     this.dataSource = await this._service.get();
+    this.getMarcas();
   }
 
   async getMarcas() {
@@ -45,19 +45,72 @@ export class ModelosComponent {
   }
 
   async agregarElemento($event: any) {
-    await this._service.agregarElemento($event);
-    //console.debug("Document written with ID: ", this.generateGUID());
-    this.getData();
+    let isComplete = this.isComplete($event.data);
+    let isExist = this.isExist(this.dataSource,$event.data);
+    if (isComplete === true && isExist === false) {
+      await this._service.agregarElemento($event);
+      //console.debug("Document written with ID: ", this.generateGUID())
+      this.getData();
+    }
+    else {
+      this._alertService.Alert('error','Error','El elemento esta incompleto o ya existe')
+        .then((response) => {
+          this.getData();
+        });
+    }
   }
 
   async actualizarElemento($event: any) {
-    await this._service.actualizarElemento($event);
-    //console.debug("Document written with ID: ", this.generateGUID());
-    this.getData();
+    let isComplete = this.isComplete($event.data);
+    let isExist = this.isExist(this.dataSource,$event.data);
+    if (isComplete === true && isExist === false) {
+      await this._service.actualizarElemento($event);
+      //console.debug("Document written with ID: ", this.generateGUID());
+      this.getData();
+    }
+    else {
+      this._alertService.Alert('error','Error','El elemento esta incompleto o ya existe')
+        .then((response) => {
+          this.getData();
+        });
+    }
   }
 
   async eliminarElemento($event: any) {
     await this._service.eliminarElemento($event);
     this.getData();
+  }
+
+  isExist(dataSource: Modelos[], data: Modelos) {
+    let isExist = false;
+    try {
+      //console.log(`${JSON.stringify(dataSource)}`);
+      if (dataSource.length > 0) {  
+        dataSource.forEach((item) => {
+          //console.log('forEach:',item.nombre);
+          if (item.nombre.toLowerCase() === data.nombre.toLowerCase()) {
+            //console.log('nombre:',item.nombre);
+            isExist = true;
+          }
+        });
+      }
+    } catch (error) {
+      return false;  
+    }
+    return isExist;
+  }
+  
+  isComplete(data: Modelos) {
+    try {
+      if (data.nombre === undefined || data.nombre === '') {
+        return false;
+      }
+      if (data.marcaId === undefined || data.marcaId === '') {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+    return true;
   }
 }

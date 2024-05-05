@@ -7,12 +7,13 @@ import { Marcas } from '../models/marcas.model';
   providedIn: 'root'
 })
 export class MarcasService {
+  private readonly collection: string = 'marcas';
 
   private _ContextService = inject(ContextService);
 
   async get() {
     let result: Marcas[] = [];
-    const querySnapshot = await getDocs(collection(this._ContextService.db, "marcas"));
+    const querySnapshot = await getDocs(collection(this._ContextService.db, this.collection));
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       // console.log(doc.id, " => ", doc.data());
@@ -30,7 +31,7 @@ export class MarcasService {
   }
 
   async agregarElemento($event: any) {
-    await setDoc(doc(this._ContextService.db, "marcas", this._ContextService.generateGUID()), {
+    await setDoc(doc(this._ContextService.db, this.collection, this._ContextService.generateGUID()), {
       nombre: $event.data.nombre,
       isActive: true
     });
@@ -38,16 +39,16 @@ export class MarcasService {
   }
 
   async actualizarElemento($event: any) {
-    const marcaRef = doc(this._ContextService.db, "marcas",  $event.oldData.guid);
-    await updateDoc(marcaRef, {
+    const itemRef = doc(this._ContextService.db, this.collection,  $event.oldData.guid);
+    await updateDoc(itemRef, {
       nombre: ($event.newData.nombre != undefined)? $event.newData.nombre: $event.oldData.nombre
     });
     //console.debug("Document written with ID: ", this.generateGUID());
   }
 
   async eliminarElemento($event: any) {
-    const marcaRef = doc(this._ContextService.db, "marcas",  $event.data.guid);
-    await updateDoc(marcaRef, {
+    const itemRef = doc(this._ContextService.db, this.collection,  $event.data.guid);
+    await updateDoc(itemRef, {
       isActive: false
     });
   }

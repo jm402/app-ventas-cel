@@ -1,7 +1,7 @@
 <div class="row page-content">
     <div class="col-12 mt-3 ps-5 pe-5">
         <div class="d-flex justify-content-center">
-          <div class="title"><strong>Marcas</strong></div>
+          <div class="title"><strong>Vebtas</strong></div>
         </div>
         <div class="row mt-1">
             <div class="col-12">
@@ -74,8 +74,16 @@
                         </dxo-editing>
 
                         <!-- <dxi-column dataField="guid" caption="Id"></dxi-column> -->
-                        <dxi-column dataField="nombre" caption="Marca" required></dxi-column>
-
+                        <dxi-column dataField="numero" caption="Número"></dxi-column>
+                        <dxi-column dataField="fecha" caption="fecha" dataType="date"></dxi-column>
+                        <dxi-column dataField="modeloId" caption="Modelo">
+                            <dxo-lookup 
+                                [dataSource]="marcaModeloList" 
+                                displayExpr="displayName" 
+                                valueExpr="modeloId">
+                            </dxo-lookup>
+                        </dxi-column>
+                        <dxi-column dataField="imei" caption="imei" [visible]="false" dataType="string"></dxi-column>
                     </dx-data-grid>
                 </div>
 
