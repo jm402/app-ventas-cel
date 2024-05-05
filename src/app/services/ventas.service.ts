@@ -33,7 +33,7 @@ export class VentasService {
         vendedor: doc.data().vendedor,
         isActive: doc.data().isActive,
       };
-      if (data.isActive) {
+      if (data.isActive && data.vendedor === this._AuthService.getUid()) {
         result.push(data);
         result = this._ContextService.ordenarArray(result);
       }

@@ -184,13 +184,13 @@ export class VentasComponent {
       const endDate = new Date(this.form.get('endDate')?.value);
       const day = 86400000;
       
-      console.log(`onFilter: ${initDate} to ${endDate}`);
+      //console.log(`onFilter: ${initDate} to ${endDate}`);
       //console.log(`onFilter: ${initDate.getTime()} to ${endDate.getTime()}`);
       if (this.dataSource.length > 0) {  
         this.dataSource.forEach((item) => {
 
           const dateItem = new Date(item.fecha);
-          console.log(`forEach: ${dateItem.getTime()}`);
+          //console.log(`forEach: ${dateItem.getTime()}`);
 
           if (dateItem.getTime() > initDate.getTime() && dateItem.getTime() < endDate.getTime()+day) {
             //console.log(`=> push: ${JSON.stringify(item)}`);
