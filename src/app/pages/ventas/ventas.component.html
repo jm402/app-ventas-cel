@@ -3,6 +3,27 @@
         <div class="d-flex justify-content-center">
           <div class="title"><strong>Vebtas</strong></div>
         </div>
+        
+        <form [formGroup]="form">
+          <div class="row">
+              <div class="col-md-2">
+                  <label for="initDate" class="form-label">Fecha inicio</label>
+                  <input type="date" formControlName="initDate" class="form-control" id="initDate">
+              </div>
+              <div class="col-md-2">
+                  <label for="endDate" class="form-label">Fecha fin</label>
+                  <input type="date" formControlName="endDate" class="form-control" id="endDate">
+              </div>
+              <div class="col-md-2 pt-4 mt-2">
+                  <button class="btn btn-secondary btn-dos" [disabled]="form.invalid" (click)="onFilter()">Filtrar</button>
+                  <button class="btn btn-secondary btn-tres" [disabled]="form.invalid" (click)="onReset()">Limpiar</button>
+              </div>
+              <div class="col-md-6 pt-4 mt-2">
+                <label for="form-control" style="font-size: 25px;">LLevas un total de {{dataSource.length}} ventas</label>
+              </div>
+          </div>
+        </form>
+  
         <div class="row mt-1">
             <div class="col-12">
               <!-- <button class="btn btn-light" (click)="openModal($event)" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar" data-bs-toggle="modal"  >

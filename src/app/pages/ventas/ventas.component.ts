@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MarcaModelo, Ventas } from '../../models/ventas.model';
 import { Marcas } from '../../models/marcas.model';
 import { Modelos } from '../../models/modelos.model';
@@ -15,6 +15,7 @@ import { AlertService } from '../../shared/services/alert.service';
 })
 export class VentasComponent {
   public dataSource:                    Ventas[];
+  public ventasList:                    Ventas[];
   public formModal:                     FormGroup;
   @ViewChild('ModalConcepto') Modal:    ElementRef<any>;
   public Title:                         any='';
@@ -30,6 +31,8 @@ export class VentasComponent {
   modelosList:                          Modelos[] = []; 
   marcasList:                           Marcas[] = [];
   marcaModeloList:                      MarcaModelo[] = [];
+  
+  form: FormGroup;
 
   private _service = inject(VentasService);
   private _MarcasService = inject(MarcasService);
@@ -37,12 +40,24 @@ export class VentasComponent {
   private _alertService = inject(AlertService);
 
   constructor() {
+    this.form = new FormGroup({
+      initDate: new FormControl('', [
+        Validators.required
+      ]),
+      endDate: new FormControl('', [
+        Validators.required
+      ]),
+    });
+    this.ventasList = [];
+    this.dataSource = [];
     this.getData();
   }
 
   async getData() {
-    this.dataSource = await this._service.get();
+    this.ventasList = await this._service.get();
+    this.dataSource = this.ventasList;
     this.getModelos();
+    this.form.reset();
   }
   
   async getModelos() {
@@ -75,8 +90,8 @@ export class VentasComponent {
 
   async agregarElemento($event: any) {
     let isComplete = this.isComplete($event.data);
-    let isExist = this.isExist(this.dataSource,$event.data);
-    if (isComplete === true && isExist === false) {
+    //let isExist = this.isExist(this.dataSource,$event.data);
+    if (isComplete === true) {// && isExist === false) {
       await this._service.agregarElemento($event);
       //console.debug("Document written with ID: ", this.generateGUID());
       this.getData();
@@ -90,9 +105,9 @@ export class VentasComponent {
   }
 
   async actualizarElemento($event: any) {
-    let isComplete = this.isComplete($event.data);
-    let isExist = this.isExist(this.dataSource,$event.data);
-    if (isComplete === true && isExist === false) {
+    let isComplete = this.isCompleteUpdate($event);
+    //let isExist = this.isExist(this.dataSource,$event.data);
+    if (isComplete === true) {// && isExist === false) {
       await this._service.actualizarElemento($event);
       //console.debug("Document written with ID: ", this.generateGUID());
       this.getData();
@@ -142,5 +157,55 @@ export class VentasComponent {
       return false;
     }
     return true;
+  }
+  
+  isCompleteUpdate($event: any) {
+    try {
+      if (($event.newData.imei != undefined)? $event.newData.imei: $event.oldData.imei === undefined || ($event.newData.imei != undefined)? $event.newData.imei: $event.oldData.imei === '') {
+        return false;
+      }
+      if (($event.newData.numero != undefined)? $event.newData.numero: $event.oldData.numero === undefined || ($event.newData.numero != undefined)? $event.newData.numero: $event.oldData.numero === '') {
+        return false;
+      }
+      if (($event.newData.modeloId != undefined)? $event.newData.modeloId: $event.oldData.modeloId === undefined || ($event.newData.modeloId != undefined)? $event.newData.modeloId: $event.oldData.modeloId === '') {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+    return true;
+  }
+  
+  onFilter() {
+    this.dataSource = this.ventasList;
+    let dataSourceTemp: Ventas[] = [];
+    try {
+      const initDate = new Date(this.form.get('initDate')?.value);
+      const endDate = new Date(this.form.get('endDate')?.value);
+      const day = 86400000;
+      
+      console.log(`onFilter: ${initDate} to ${endDate}`);
+      //console.log(`onFilter: ${initDate.getTime()} to ${endDate.getTime()}`);
+      if (this.dataSource.length > 0) {  
+        this.dataSource.forEach((item) => {
+
+          const dateItem = new Date(item.fecha);
+          console.log(`forEach: ${dateItem.getTime()}`);
+
+          if (dateItem.getTime() > initDate.getTime() && dateItem.getTime() < endDate.getTime()+day) {
+            //console.log(`=> push: ${JSON.stringify(item)}`);
+            dataSourceTemp.push(item);
+          }
+        });
+      }
+      this.dataSource = dataSourceTemp;
+      console.log(``);
+    } catch (error) {
+    }
+  }
+
+  onReset() {
+    this.form.reset();
+    this.getData();
   }
 }
