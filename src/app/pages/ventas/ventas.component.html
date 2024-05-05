@@ -104,6 +104,20 @@
                                 valueExpr="modeloId">
                             </dxo-lookup>
                         </dxi-column>
+                        <!-- <dxi-column type="buttons" caption="Acciones">
+                          <dxi-button
+                            template="btnScanImei">
+                            <div *dxTemplate="let data of 'btnScanImei'" style="display: -webkit-inline-box;">
+                              <a
+                                class="pointer">
+                                  <button  class="btn btnEditar"
+                                        (click)="onScanImei(data)">
+                                        <i class="fa fa-pencil"></i>
+                                  </button>
+                                </a>
+                            </div>
+                          </dxi-button>
+                        </dxi-column> -->
                         <dxi-column dataField="imei" caption="imei" [visible]="false" dataType="string"></dxi-column>
                     </dx-data-grid>
                 </div>

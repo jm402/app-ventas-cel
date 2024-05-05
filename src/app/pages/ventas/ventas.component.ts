@@ -208,4 +208,7 @@ export class VentasComponent {
     this.form.reset();
     this.getData();
   }
+
+  onScanImei($event: any) {
+  }
 }
