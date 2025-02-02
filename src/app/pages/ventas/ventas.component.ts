@@ -160,14 +160,26 @@ export class VentasComponent {
   }
   
   isCompleteUpdate($event: any) {
+    let modelo: Ventas = {
+      imei: '',
+      numero: '',
+      modeloId: '',
+      guid: '',
+      isActive: false,
+      fecha: new Date(),
+      vendedor: ''  
+    }
+    modelo.imei = ($event.newData.imei != undefined)? $event.newData.imei: $event.oldData.imei;
+    modelo.numero = ($event.newData.numero != undefined)? $event.newData.numero: $event.oldData.numero;
+    modelo.modeloId = ($event.newData.modeloId != undefined)? $event.newData.modeloId: $event.oldData.modeloId;
     try {
-      if (($event.newData.imei != undefined)? $event.newData.imei: $event.oldData.imei === undefined || ($event.newData.imei != undefined)? $event.newData.imei: $event.oldData.imei === '') {
+      if (modelo.imei === undefined || modelo.imei  === '') {
         return false;
       }
-      if (($event.newData.numero != undefined)? $event.newData.numero: $event.oldData.numero === undefined || ($event.newData.numero != undefined)? $event.newData.numero: $event.oldData.numero === '') {
+      if (modelo.numero === undefined || modelo.numero === '') {
         return false;
       }
-      if (($event.newData.modeloId != undefined)? $event.newData.modeloId: $event.oldData.modeloId === undefined || ($event.newData.modeloId != undefined)? $event.newData.modeloId: $event.oldData.modeloId === '') {
+      if (modelo.modeloId === undefined || modelo.modeloId === '') {
         return false;
       }
     } catch (error) {

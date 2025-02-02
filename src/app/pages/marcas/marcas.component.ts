@@ -53,9 +53,10 @@ export class MarcasComponent {
   }
 
   async actualizarElemento($event: any) {
-    let isComplete = this.isCompleteUpdate($event);
-    //let isExist = this.isExist(this.dataSource,$event.data);
-    if (isComplete === true) {// && isExist === false) {
+    let isComplete = this.isComplete($event.newData);
+    let isExist = this.isExist(this.dataSource,$event.data);
+    
+    if (isComplete === true && isExist === false) {
       await this._service.actualizarElemento($event);
       //console.debug("Document written with ID: ", this.generateGUID());
       this.getData();
@@ -94,7 +95,7 @@ export class MarcasComponent {
 
   isComplete(data: Marcas) {
     try {
-      if (data.nombre === undefined || data.nombre === '') {
+      if (data.nombre === undefined || data.nombre === '' || data.nombre === null) {
         return false;
       }
     } catch (error) {

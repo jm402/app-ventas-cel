@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, model } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Modelos } from '../../models/modelos.model';
 import { ModelosService } from '../../services/modelos.service';
@@ -62,8 +62,8 @@ export class ModelosComponent {
 
   async actualizarElemento($event: any) {
     let isComplete = this.isCompleteUpdate($event);
-    //let isExist = this.isExist(this.dataSource,$event.data);
-    if (isComplete === true) {// && isExist === false) {
+    let isExist = this.isExist(this.dataSource,$event.data);
+    if (isComplete === true && isExist === false) {
       await this._service.actualizarElemento($event);
       //console.debug("Document written with ID: ", this.generateGUID());
       this.getData();
@@ -102,10 +102,10 @@ export class ModelosComponent {
   
   isComplete(data: Modelos) {
     try {
-      if (data.nombre === undefined || data.nombre === '') {
+      if (data.nombre === undefined || data.nombre === '' || data.nombre === null) {
         return false;
       }
-      if (data.marcaId === undefined || data.marcaId === '') {
+      if (data.marcaId === undefined || data.marcaId === '' || data.marcaId === null) {
         return false;
       }
     } catch (error) {
@@ -115,11 +115,21 @@ export class ModelosComponent {
   }
   
   isCompleteUpdate($event: any) {
+    //console.log($event);
+    let modelo: Modelos = {
+      nombre: '',
+      marcaId: '',
+      guid: '',
+      isActive: false
+    };
+    modelo.nombre = ($event.newData.nombre != undefined)? $event.newData.nombre: $event.oldData.nombre;
+    modelo.marcaId = ($event.newData.marcaId != undefined)? $event.newData.marcaId: $event.oldData.marcaId;
+    //console.log(modelo);
     try {
-      if (($event.newData.nombre != undefined)? $event.newData.nombre: $event.oldData.nombre === undefined || ($event.newData.nombre != undefined)? $event.newData.nombre: $event.oldData.nombre === '') {
+      if (modelo.nombre === undefined || modelo.nombre === '') {
         return false;
       }
-      if (($event.newData.marcaId != undefined)? $event.newData.marcaId: $event.oldData.marcaId === undefined || ($event.newData.marcaId != undefined)? $event.newData.marcaId: $event.oldData.marcaId === '') {
+      if (modelo.marcaId === undefined || modelo.marcaId === '') {
         return false;
       }
     } catch (error) {
